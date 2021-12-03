@@ -20,7 +20,7 @@ NPM:
 "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
 }
 
-**rodar: yarn dev || npm dev**
+**rodar: yarn dev || npm run dev**
 
 # O que é
 
