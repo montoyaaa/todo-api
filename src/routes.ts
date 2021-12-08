@@ -1,8 +1,14 @@
 import { Request, Response, Router } from "express";
 import { randomUUID } from "crypto";
-import { todoList } from ".";
 
 const routes = Router();
+
+interface Todo {
+  todo: any;
+  id: string;
+}
+
+let todoList: Todo[] = [];
 
 routes.post("/todo", (request: Request, response: Response) => {
   const { todo } = request.body;

@@ -3,13 +3,6 @@ import routes from "./routes";
 
 const app = express();
 
-interface Todo {
-  todo: any;
-  id: string;
-}
-
-export let todoList: Todo[] = [];
-
 app.use(express.json());
 app.use(express.urlencoded());
 
