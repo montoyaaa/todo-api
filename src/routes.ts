@@ -11,12 +11,26 @@ interface Todo {
 let todoList: Todo[] = [];
 
 routes.post("/todo", (request: Request, response: Response) => {
-  const { todo } = request.body;
+  try {
+    const { todo } = request.body;
 
-  const newTodo = { todo, id: randomUUID() };
-  todoList.push(newTodo);
+    if (!!!todo) {
+      throw new Error("Todo is required");
+    }
 
-  return response.json(newTodo);
+    const newTodo = { todo, id: randomUUID() };
+    todoList.push(newTodo);
+
+    return response.json(newTodo);
+  } catch (error) {
+    let errorMessage = "Error creating todo";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+      return response.status(400).json({
+        message: errorMessage,
+      });
+    }
+  }
 });
 
 routes.get("/todo", (_, response: Response) => {
@@ -24,25 +38,55 @@ routes.get("/todo", (_, response: Response) => {
 });
 
 routes.delete("/todo/:id", (request: Request, response: Response) => {
-  const { id } = request.params;
+  try {
+    const { id } = request.params;
+    if (!!!id) {
+      throw new Error("ID is required");
+    }
 
-  const index = todoList.findIndex((todo) => todo.id === id);
+    const index = todoList.findIndex((todo) => todo.id === id);
 
-  todoList.splice(index, 1);
+    todoList.splice(index, 1);
 
-  return response.json(todoList);
+    return response.json(todoList);
+  } catch (error) {
+    let errorMessage = "Error deleting todo";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+      return response.status(400).json({
+        message: errorMessage,
+      });
+    }
+  }
 });
 
 routes.put("/todo/:id", (request: Request, response: Response) => {
-  const { id } = request.params;
-  const { todo } = request.body;
+  try {
+    const { id } = request.params;
+    const { todo } = request.body;
 
-  const index = todoList.findIndex((todo) => todo.id === id);
+    if (!!!id) {
+      throw new Error("ID is required");
+    }
+    if (!!!todo) {
+      throw new Error("Todo is required");
+    }
 
-  const todoForEdit = todoList[index];
-  todoForEdit["todo"] = todo;
+    const index = todoList.findIndex((todo) => todo.id === id);
 
-  return response.json(todoForEdit);
+    const todoForEdit = todoList[index];
+    todoForEdit["todo"] = todo;
+
+    return response.json(todoForEdit);
+  } catch (error) {
+    let errorMessage = "Error updating todo";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+      return response.status(400).json({
+        message: errorMessage,
+      });
+    }
+  }
 });
 
 export default routes;
