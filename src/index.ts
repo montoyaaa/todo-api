@@ -10,7 +10,5 @@ app.use(express.urlencoded());
 
 app.use(routes);
 
-const port = 8080;
-app.listen(process.env.PORT || port, () =>
-  console.log(`🚀 App rodando na porta ${port} 🚀`)
-);
+const port = process.env.PORT || 8080;
+app.listen(port, () => console.log(`🚀 App rodando na porta ${port} 🚀`));
